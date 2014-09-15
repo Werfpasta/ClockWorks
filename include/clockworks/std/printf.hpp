@@ -1,7 +1,7 @@
 #if !defined(CW_INCLUDE_PRINTF)
 #define CW_INCLUDE_PRINTF
 
-#include "clockworks\os\windows.hpp"
+#include "clockworks\os\os.hpp"
 #include <stdarg.h>
 
 namespace ClockWorks {

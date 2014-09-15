@@ -1,7 +1,7 @@
 #if !defined(CW_INCLUDE_MEMORY)
 #define CW_INCLUDE_MEMORY
 
-#include "clockworks\os\windows.hpp"
+#include "clockworks\os\os.hpp"
 
 #pragma function(memset, memcpy)
 void *memset(void *dest, int count, size_t c) {
