@@ -4,6 +4,7 @@
 
 #include "../std/pair.hpp"
 #include "../std/vector.hpp"
+#include "../std/size_t.hpp"
 
 //extern std::string get_Element_Name(const int x);
 //extern double parse_Expression(const std::string& exp);
@@ -12,13 +13,6 @@ namespace ClockWorks {
   namespace game {
     class Unit {
     protected:
-
-      std::string ID; //Unit ID. Assumed to be unique.
-      std::string Name; //The name of the unit
-      std::vector<std
-
-
-      //Maybe include controller info?
 
       long** gauges; 
       //This is a array of 2-element arrays.
@@ -33,221 +27,120 @@ namespace ClockWorks {
       //in case of bonuses declare here
 
       int level; //Level of Unit
+      int xp[2]; //Very special XP Gauge.
 
-      int XP; //for PCs, this represents total EXP accrued. For NPCs, this represents EXP Gained when defeated in battle.
-      int NextLVL; //EXP required to level up
-      int GP; //Amount of money
+
+      int* currency;
 
 
       long* statistics;
       long* statistic_modifiers;
       std::vector<float>* statistic_multipliers;
 
-      int Statistic_Modifier[13]; //Modifiers will affect these parameters
-      int Statistic_Bonus[13]; //Stat Bonuses from Equipment
-      std::vector<float> Statistic_Modifier_Mult[13]; //The in-battle mults
-      std::vector<float> Statistic_Bonus_Mult[13]; //The gear multipliers
 
-      /***************************************************************/
-      /*                       Elemental Stats                       */
-      /***************************************************************/
-      /*      These values control Elemental Attack, Defense, Absorb */
-      /* (Being healed by an element) and Immunity. All of these     */
-      /* will be implemented as an array of 7 variables, each being  */
-      /* associated to one, and only one, element, as follows:       */
-      /***************************************************************/
-      /*                     Array Index Listing                     */
-      /* [0] - Anything that is supposed to heal.                    */
-      /* [1] - Fire                                                  */
-      /* [2] - Air                                                   */
-      /* [3] - Water                                                 */
-      /* [4] - Earth                                                 */
-      /* [5] - Light                                                 */
-      /* [6] - Dark                                                  */
-      /* [7] - Base (Nonelemental)                                   */
-      /***************************************************************/
-
-      float Elemental_Attack[8]; // Elemental Attack
-      float Elemental_Defense[8]; // Elemental Defense
-		
-		
-      //int Elemental_Attack_Bonus[7]; // Elemental Attack Modifiers   
-      //int Elemental_Defense_Bonus[7]; // Elemental Defense Modifiers
-      std::vector<float> Elemental_Attack_Bonus_Mult[8]; //The gear multipliers
-      std::vector<float> Elemental_Defense_Bonus_Mult[8]; //The gear multipliers
-      //int Elemental_Attack_Bonus[7]; // Elemental Attack Modifiers   
-      //int Elemental_Defense_Bonus[7]; // Elemental Defense Modifiers
-
-      //int Elemental_Attack_Modifier[7]; // Elemental Attack Modifiers   
-      //int Elemental_Defense_Modifier[7]; // Elemental Defense Modifiers
-      std::vector<float> Elemental_Attack_Modifier_Mult[8]; //The battle multipliers
-      std::vector<float> Elemental_Defense_Modifier_Mult[8]; //The battle multipliers
-
+      float** elemental_parameters;
+      float** elemental_parameter_modifiers;
+      std::vector<float>** elemental_parameter_multipliers;
 
 		
+      std::vector<std::pair<std::string,int>> statuses;
+      
+      //int Ability_Flags[8]; //All-purpose ability flags.
+
+      std::pair<std::string,int>* equipment;
+
+      //Taking out Known Abilities: That is to be determined by an Ability Controller.
+
+
+      //Same goes with Items: That should be external
 		
-		
-		
-
-      //Absorb/Nullify flags: Healing, F, A, W, E, L, D. Absb>Null
+      int growth_table;
 
 
-
-      /***************************************************************/
-      /*                     Status Effect Flags                     */
-      /***************************************************************/
-      /*      These flags control the presence and duration of any   */
-      /* status effect in this game that cannot be handled simply    */
-      /* by stat modifiers. Enclosed is a list of each index in the  */
-      /* array and what they WILL control. Refer to this list in the */
-      /* case of a discrepency.                                      */
-      /***************************************************************/
-      /*                     Array Index Listing                     */
-      /* [0] - POISON Flag, Intensity, Status is permanent           */
-      /* [1] - BURN Flag, Intensity                                  */
-      /* [2] - SLEEP Flag, Turns                                     */
-      /* [3] - BLIND Flag, Status is permanent                       */
-      /* [4] - HALT Timer, Time Units (SPD=1)                        */
-      /* [5] - SILENCE Flag, status is permanent                     */
-      /* [6] - STONE Flag, Status is permanent                       */
-      /* [7] - FORCED COMMAND flag, number represents forced command */
-      /* [8] - DOOM/DEAD flag (Turns, -1 for dead)                   */
-      /* [9] - IMPERVIOUS Timer, Turns                               */
-      /* [10] - BLESS Layers                                         */
-      /* [11] - REFLECT Flag, Iterations                             */
-      /* [12] - VANTAGE Flag, One Turn (as in Defend-Strike)         */
-      /* [13] - HASTE/SLOW Flag, Status is permanent                 */
-      /* [14] - DAMAGE SHIELD Intensity, Status is permanent         */
-      /* [15] - SHIELD Timer, Turns                                  */
-      /* [16] - REGEN Intensity, Status is permanent                 */
-      /* [17] - CALM Intensity, Status is permanent                  */
-      /* [18] - BLISS Intensity, (Intensity/Turns)                   */
-      /* [19] - IMAGE Layers                                         */
-      /* [20] - INVIS Timer, Turns                                   */
-      /* [21] - ANGEL Flag (revive amount/Turns)                     */
-      /* [22] - ABSORB Amount, Status is permanent                   */
-      /* [23] - BARRIER Threshold, Status is permanent               */
-      /***************************************************************/
-
-      float Status_Attack[24]; // Elemental Attack
-      float Status_Defense[24]; // Elemental Defense
-      std::vector<float> Status_Attack_Bonus_Mult[24]; //The gear multipliers
-      std::vector<float> Status_Defense_Bonus_Mult[24]; //The gear multipliers
-      std::vector<float> Status_Attack_Modifier_Mult[24]; //The battle multipliers
-      std::vector<float> Status_Defense_Modifier_Mult[24]; //The battle multipliers
+      //Passives and Attack Type/Commands are going elsewhere.
 
 
-      int Status_Effect_Flag[24];	
-      int Status_Effect_Default[24]; //Status Defaults (Or rather, initial values...)
-      int Status_Effect_Default_Bonus[24]; //Status Defaults (Or rather, initial values...)
-
-      bool is_Fleeing; //defaulted to false
-
-      int Cast_Speed; //NOT the same as normal speed!
-		
-      int Charge_Time[2]; //Time Element [0] = Normal, [1] = Casting
-
-      int Current_Ability; //The Spell currently being cast
-		
-      // get rid of below line
-      int Ability_Flags[8]; //All-purpose ability flags.
-		
-      int Current_Target; //The Target of Spell
-      /***************************************************************/
-      /*              Sentinel Values for CurrentTarget              */
-      /***************************************************************/
-      /* -1 = ALLY PARTY                                             */
-      /* -2 = ENEMY PARTY                                            */
-      /* -3 = NO TARGET (either self only or target everything)      */
-      /* -4 = NO TARGET (spell will fizzle)                          */
-      /***************************************************************/
-
-      std::string Equipment[5]; //The equipment slots.
-      std::vector<int> Equipment_Types[5]; //THe types of everything
-      std::vector<int> Equipment_Modifiers[5]; //Add-ons via equipment.
-      //std::string Weapon_Equipped;
-      //std::vector<int> Weapon_Types;
-      //std::string Shield_Equipped; //Or other weapon.
-      //std::vector<int> Shield_Types;
-      //std::string Helm_Equipped;
-      //std::vector<int> Helm_Types;
-      //std::string Armor_Equipped;
-      //std::vector<int> Armor_Types;
-      //std::string Access_Equipped;
-      //std::vector<int> Access_Types;
-
-
-
-      std::vector<int> Abilities_Known; 
-      std::vector<int> Ability_Modifiers;
-
-      //std::vector<int> Auxiliary_Flags;
-      //std::vector<int> Auxiliary_Flag_Bonuses;
-      //std::vector<int> Auxiliary_Flag_Modifiers;
-
-
-      int Item_Capacity;
-      std::vector<std::string> Items;
-		
-      int Growth_Table; //ID of the growth table used.
-		
-      std::vector<int> Passives_Known; //Passives the Unit knows
-      std::vector<int> Passive_Modifiers; //Modifier to Known Passives.
-
-      int Passive_Capacity; //Number of Passives Character may equip.
-      std::vector<int> Passives; //Passives currently in use
-      std::vector<int> Innate_Passives; //Passives granted by equipment or nature
-		
-
-
-
-      int Attack_Command; //The Command used to Attack
-      int Passive_Command; //The Command that does NOT halt casting. Usually WAIT.
-
-      int Attack_Type[2]; //there's a lot going into this one...
-      int Attack_Type_Default[2]; //Defaults.
-
-      int Command_Capacity; //Maximum number of commands. For Clock_Bridges Proper, this will be 3.
-      std::vector<int> Command_List; //This excludes Attack
-
-
-
-      void init(); //for failure
+      void init();
       bool init(std::string data); //Loads data from a string
 
       void zero_Out_Modifiers(); //Initializes Modifiers to 0.
 
-      void resolve_Battle_Effects(); //Resolves Battle stuff like statuses.
-
-		
 
     public:	
 
-      static std::string UNIT_FILE;
-      static std::string GROWTH_FILE;
+      const std::string ID; //Unit ID. Assumed to be unique.
+      std::string Name; //The name of the unit
+      std::vector<std::String> Descrip; //Various Descriptors go here.
+
+      //static std::string UNIT_FILE;
+      //static std::string GROWTH_FILE;
 
       //constructor/destructor
 
       Unit();
 
-      Unit(const int ID);
-
       ~Unit(); //destructor  so a Unit pointer can resolve properly.
 
       //start off with get/set functions
 
-		
-      std::string Parse_Combat_Statistics(const std::string& parseme, bool modify = false);
-      std::string Parse_Noncombat_Statistics(const std::string& parseme);
 
-      inline std::string get_Name() const{return Name;}
-      inline void set_Name(const std::string& new_name){Name = new_name;}
-		
-      inline int get_ID() const{return ID;}
-		
-      //void set_ID(const int x);
 
-	
+
+      /*
+
+      long** gauges; 
+      long* gauge_modifiers;
+      
+      std::vector<float>* gauge_multipliers;
+
+      int level; //Level of Unit
+      int xp[2]; //Very special XP Gauge.
+
+      int* currency;
+
+      long* statistics;
+      long* statistic_modifiers;
+      std::vector<float>* statistic_multipliers;
+
+      float** elemental_parameters;
+      float** elemental_parameter_modifiers;
+      std::vector<float>** elemental_parameter_multipliers;
+		
+      std::vector<std::pair<std::string,int>>* statuses;
+      
+      std::pair<std::string,int> equipment;
+
+      //Taking out Known Abilities: That is to be determined by an Ability Controller.
+
+
+      //Same goes with Items: That should be external
+		
+      int growth_table;
+
+
+      //Passives and Attack Type/Commands are going elsewhere.
+
+
+      void init();
+      bool init(std::string data); //Loads data from a string
+
+      void zero_Out_Modifiers(); //Initializes Modifiers to 0.
+
+       */
+
+
+      // This function reads out the two values for a given gauge, and sports 4 operating modes.
+      // It can either spit out the modded maximum value or the unmodded value.
+      // Modifications are of the form (Base + Modifier)*Multipliers.
+      std::pair<long,long> read_gauge(size_t gauge, boolean modded = true);
+
+      // Takes a gauge, and shifts it by a certain value.
+      // If respect true, then maximum gauge limits will be respected.
+      void shift_gauge(size_t gauge, long value, bool respect = true);
+
+      
+
+
 
       inline int get_HP() const{return HP[0];} //gets current HP
       inline int get_MP() const{return MP[0];} //gets current MP
