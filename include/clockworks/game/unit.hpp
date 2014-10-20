@@ -14,12 +14,28 @@ namespace ClockWorks {
     protected:
 
 
+      // CONFIGURATION VARIABLES
+      // These are the variables to which the ClockWorks::game::unit
+      // constructors will refer whenever a new unit is constructed.
+      // Therefore, These will only ever be set once, and the
+      // _initialized variable will enforce that.
+
+      static std::size_t _NUM_GAUGES; //2
+      static std::size_t _NUM_STATISTICS; //12
+      static std::size_t _NUM_ELEMENTS; //8
+      static std::size_t _NUM_ELEMENTAL_PARAMETERS; //2
+      static std::size_t _NUM_STATUSES; //26
+      static std::size_t _NUM_STATUS_PARAMETERS; //2
+
+      // Initialization Test Value.
+      static bool _initialized;
+
       //This is a array of 2-element arrays.
       //index[i][0] is the current value
       //index[i][1] is the maximum value
-      std::valarray<std::pair<int,int>> gauges;
+      std::valarray<std::pair<int,int> > gauges;
       std::valarray<int> gauge_modifiers;
-      std::valarray<std::vector<float>> gauge_multipliers;
+      std::valarray<std::vector<float> > gauge_multipliers;
 
 
       int level; //Level of Unit
@@ -28,17 +44,17 @@ namespace ClockWorks {
 
       std::valarray<int> statistics;
       std::valarray<int> statistic_modifiers;
-      std::valarray<std::vector<float>> statistic_multipliers;
+      std::valarray<std::vector<float> > statistic_multipliers;
 
       //Element-Major
-      std::valarray<std::valarray<float>> elemental_parameters;
-      std::valarray<std::valarray<float>> elemental_parameter_modifiers;
-      std::valarray<std::valarray<std::vector<float>>> elemental_parameter_multipliers;
+      std::valarray<std::valarray<float> > elemental_parameters;
+      std::valarray<std::valarray<float> > elemental_parameter_modifiers;
+      std::valarray<std::valarray<std::vector<float> > > elemental_parameter_multipliers;
 
       //Status-Major
-      std::valarray<std::valarray<float>> status_parameters;
-      std::valarray<std::valarray<float>> status_parameter_modifiers;
-      std::valarray<std::valarray<std::vector<float>>> status_parameter_multipliers;
+      std::valarray<std::valarray<float> > status_parameters;
+      std::valarray<std::valarray<float> > status_parameter_modifiers;
+      std::valarray<std::valarray<std::vector<float> > > status_parameter_multipliers;
 
       void enforce_respect(std::size_t gauge);
 
@@ -59,6 +75,15 @@ namespace ClockWorks {
       ~unit(); //destructor  so a Unit pointer can resolve properly.
       unit(const unit& other); //Copy Constructor
       unit& operator=(const unit& rhs);
+
+
+      // INITIALIZATION FUNCTION //
+      // This function MUST be called before any units are
+      // constructed by the game. Otherwise, the configuration
+      // will not work and your game will break.
+      static void init(std::size_t gauge, std::size_t stats, 
+		       std::size_t elements, std::size_t elemparams, 
+		       std::size_t status, std::size_t statusparams);
 
 
       // GAUGE FUNCTION DESCRIPTION //

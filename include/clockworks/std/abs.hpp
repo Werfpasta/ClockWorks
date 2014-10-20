@@ -1,10 +1,10 @@
 #if !defined(CW_INCLUDE_ABS)
 #define CW_INCLUDE_ABS
 
-#include "clockworks\std\enable_if.hpp"
-#include "clockworks\std\is_integral.hpp"
-#include "clockworks\std\is_signed.hpp"
-#include "clockworks\std\is_floating_point.hpp"
+#include "clockworks/std/enable_if.hpp"
+#include "clockworks/std/is_integral.hpp"
+#include "clockworks/std/is_signed.hpp"
+#include "clockworks/std/is_floating_point.hpp"
 
 namespace ClockWorks {
 	namespace std {

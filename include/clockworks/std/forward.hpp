@@ -1,8 +1,8 @@
 #if !defined(CW_INCLUDE_FORWARD)
 #define CW_INCLUDE_FORWARD
 
-#include "clockworks\std\remove_refrence.hpp"
-#include "clockworks\std\is_lvalue_refrence.hpp"
+#include "clockworks/std/remove_refrence.hpp"
+#include "clockworks/std/is_lvalue_refrence.hpp"
 
 namespace ClockWorks {
 	namespace std {

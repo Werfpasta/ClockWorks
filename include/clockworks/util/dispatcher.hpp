@@ -1,10 +1,10 @@
 #if !defined(CW_INCLUDE_DISPATCHER)
 #define CW_INCLUDE_DISPATCHER
 
-#include "clockworks\util\delegate.hpp"
-#include "clockworks\std\vector.hpp"
-#include "clockworks\std\is_void.hpp"
-#include "clockworks\std\enable_if.hpp"
+#include "clockworks/util/delegate.hpp"
+#include "clockworks/std/vector.hpp"
+#include "clockworks/std/is_void.hpp"
+#include "clockworks/std/enable_if.hpp"
 
 namespace ClockWorks {
 	namespace Util {

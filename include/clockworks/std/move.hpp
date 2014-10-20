@@ -1,7 +1,7 @@
 #if !defined(CW_INCLUDE_MOVE)
 #define CW_INCLUDE_MOVE
 
-#include "clockworks\std\remove_refrence.hpp"
+#include "clockworks/std/remove_refrence.hpp"
 
 namespace ClockWorks {
 	namespace std {

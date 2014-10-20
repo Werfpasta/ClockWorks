@@ -1,7 +1,7 @@
 #if !defined(CW_INCLUDE_IS_FLOATING_POINT)
 #define CW_INCLUDE_IS_FLOATING_POINT
 
-#include "clockworks\std\true_false_type.hpp"
+#include "clockworks/std/true_false_type.hpp"
 
 namespace ClockWorks {
 	namespace std {

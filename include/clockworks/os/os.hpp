@@ -22,7 +22,7 @@
 #		if defined(__linux__)
 #			if !defined(CW_INCLUDE_LINUX)
 #				define CW_INCLUDE_LINUX
-#				include <linux.h>
+#				include <linux/kernel.h>
 #			endif
 #		endif
 #	endif

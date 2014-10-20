@@ -1,9 +1,9 @@
 #if !defined(CW_INCLUDE_PAIR)
 #define CW_INCLUDE_PAIR
 
-#include "clockworks\std\move.hpp"
-#include "clockworks\std\forward.hpp"
-#include "clockworks\std\swap.hpp"
+#include "clockworks/std/move.hpp"
+#include "clockworks/std/forward.hpp"
+#include "clockworks/std/swap.hpp"
 
 namespace ClockWorks {
 	namespace std {

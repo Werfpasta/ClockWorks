@@ -49,24 +49,46 @@ namespace {
 
 namespace ClockWorks {
   namespace game {
-
-
+    
     //protected
-
-
-
-    //public
+   
+    std::size_t unit::_NUM_GAUGES;
+    std::size_t unit::_NUM_STATISTICS;
+    std::size_t unit::_NUM_ELEMENTS;
+    std::size_t unit::_NUM_ELEMENTAL_PARAMETERS;
+    std::size_t unit::_NUM_STATUSES;
+    std::size_t unit::_NUM_STATUS_PARAMETERS;
+    
+    bool unit::_initialized = false; //Initializing here.
 
     void unit::enforce_respect(std::size_t gauge) {
       int compareme = std::get<1>(gauges[gauge]);
       compareme += gauge_modifiers[gauge];
       // Let's be pessimistic and floor everything.
       for(float f : gauge_multipliers[gauge]) compareme *= f;
-
+      
       if(std::get<0>(gauges[gauge]) >= compareme) std::get<0>(gauges[gauge]) = compareme;
+      
+    }
+
+    //public
+    
+    void unit::init(std::size_t gauge, std::size_t stats, 
+		    std::size_t elements, std::size_t elemparams, 
+		    std::size_t status, std::size_t statusparams) {
+      
+      if(_initialized) throw std::exception(); //"PASTA ERROR: Unit Construct Already Initialized!!\n";
+
+      _NUM_GAUGES = gauge;
+      _NUM_STATISTICS = stats;
+      _NUM_ELEMENTS = elements; 
+      _NUM_ELEMENTAL_PARAMETERS = elemparams; 
+      _NUM_STATUSES = status;
+      _NUM_STATUS_PARAMETERS = statusparams;
+
+      _initialized = true;
 
     }
-    
     
     std::pair<int,int> unit::read_gauge(std::size_t gauge, bool modded) const {
       
@@ -204,3 +226,6 @@ namespace ClockWorks {
 };
 
 
+int main() {
+  return 0;
+}

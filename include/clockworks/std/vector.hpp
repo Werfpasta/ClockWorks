@@ -1,7 +1,7 @@
 #if !defined(CW_INCLUDE_VECTOR)
 #define CW_INCLUDE_VECTOR
 
-#include "clockworks\std\swap.hpp"
+#include "clockworks/std/swap.hpp"
 
 namespace ClockWorks {
 	namespace std {

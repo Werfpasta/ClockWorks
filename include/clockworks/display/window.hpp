@@ -1,11 +1,11 @@
 #if !defined(CW_INCLUDE_WINDOW)
 #define CW_INCLUDE_WINDOW
 
-#include "clockworks\os\os.hpp"
-#include "clockworks\util\dispatcher.hpp"
-#include "clockworks\math\geom\rect.hpp"
-#include "clockworks\std\abs.hpp"
-#include "clockworks\std\pair.hpp"
+#include "clockworks/os/os.hpp"
+#include "clockworks/util/dispatcher.hpp"
+#include "clockworks/math/geom/rect.hpp"
+#include "clockworks/std/abs.hpp"
+#include "clockworks/std/pair.hpp"
 
 namespace ClockWorks {
 	namespace Display {

@@ -1,9 +1,9 @@
 #if !defined(CW_INCLUDE_TINYCPP)
 #define CW_INCLUDE_TINYCPP
 
-#include "clockworks\os\os.hpp"
+#include "clockworks/os/os.hpp"
 
-#include "clockworks\std\memory.hpp"
+#include "clockworks/std/memory.hpp"
 
 #pragma comment(linker, "/INCREMENTAL:NO")
 #pragma comment(linker, "/NODEFAULTLIB")

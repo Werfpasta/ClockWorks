@@ -1,7 +1,7 @@
 #if !defined(CW_INCLUDE_IS_SIGNED)
 #define CW_INCLUDE_IS_SIGNED
 
-#include "clockworks\std\true_false_type.hpp"
+#include "clockworks/std/true_false_type.hpp"
 
 namespace ClockWorks {
 	namespace std {
