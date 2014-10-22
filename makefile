@@ -1,15 +1,16 @@
-CC= g++
-LD = g++
+CC= clang++
+LD = clang++
 
-INCDIRS="-I./include/"
-LIBDIRS="-Linclude/"
-BINDIR="bin/"
+INCDIRS=-I./include/
+LIBDIRS=-Linclude/
+BINDIR=bin/
+SRCDIR=src/
 
-CXXFLAGS= --std=c++11 -Wall
+CXXFLAGS= -c --std=c++11 -Wall
 LDFLAGS=
-SOURCES= src/main.cpp
+SOURCES= $(shell find $(SRCDIR) -name '*.cpp')
 OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=test
+EXECUTABLE= $(BINDIR)test
 
 all: $(SOURCES) $(EXECUTABLE)
 
@@ -18,3 +19,7 @@ $(EXECUTABLE): $(OBJECTS)
 
 .cpp.o:
 	$(CC) $(CXXFLAGS) $(INCDIRS) $< -o $@
+
+
+clean:
+	rm $(EXECUTABLE) $(OBJECTS)

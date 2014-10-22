@@ -62,7 +62,7 @@ namespace ClockWorks {
 
       const std::string ID; //Unit ID. Assumed to be unique.
       std::string Name; //The name of the unit
-      std::vector<std::string> Descrip; //Various Descriptors go here.
+      std::vector<std::string> Description; //Various Descriptors go here.
 
       //static std::string UNIT_FILE;
       //static std::string GROWTH_FILE;
@@ -71,6 +71,8 @@ namespace ClockWorks {
       //TODO(JT): WRITE UP CONSTRUCTORS/DESTRUCTORS
 
       unit();
+      unit(const char* cstr);
+      unit(const std::string& data);
       //Must specify all 3 - Managing own memory
       ~unit(); //destructor  so a Unit pointer can resolve properly.
       unit(const unit& other); //Copy Constructor

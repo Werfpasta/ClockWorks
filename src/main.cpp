@@ -1,3 +1,18 @@
+
+#include "clockworks/game/unit.hpp"
+
+
+int main() {
+  ClockWorks::game::unit::init(2,12,8,2,26,2);
+  //  ClockWorks::game::unit bob;
+  return 0;
+}
+
+
+
+/*
+//Commenting out Ryan's main to preserve it while I hijack it.
+
 #pragma warning(disable : 4426) //'constexpr' was ignored (class literal types are not yet supported)
 
 #include "clockworks/tinycpp.hpp"
@@ -24,3 +39,5 @@ int main(int argc, char **argv) {
 	while(MainLoop)  ;
 	return 0;
 }
+
+*/

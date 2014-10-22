@@ -71,7 +71,9 @@ namespace ClockWorks {
       
     }
 
+    
     //public
+
     
     void unit::init(std::size_t gauge, std::size_t stats, 
 		    std::size_t elements, std::size_t elemparams, 
@@ -225,7 +227,3 @@ namespace ClockWorks {
 
 };
 
-
-int main() {
-  return 0;
-}
