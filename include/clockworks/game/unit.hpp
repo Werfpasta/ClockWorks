@@ -7,6 +7,7 @@
 #include <string>
 #include <cstdlib>
 #include <stdexcept>
+#include <iostream>
 
 namespace ClockWorks {
   namespace game {
@@ -60,9 +61,12 @@ namespace ClockWorks {
 
     public:	
 
-      const std::string ID; //Unit ID. Assumed to be unique.
-      std::string Name; //The name of the unit
-      std::vector<std::string> Description; //Various Descriptors go here.
+      //const std::string ID; //Unit ID. Assumed to be unique.
+      // ID will be determined by higher-level constructs, such
+      // as Managers and the like
+
+      std::string name; //The name of the unit
+      std::vector<std::string> description; //Various Descriptors go here.
 
       //static std::string UNIT_FILE;
       //static std::string GROWTH_FILE;
@@ -71,13 +75,19 @@ namespace ClockWorks {
       //TODO(JT): WRITE UP CONSTRUCTORS/DESTRUCTORS
 
       unit();
-      unit(const char* cstr);
-      unit(const std::string& data);
-      //Must specify all 3 - Managing own memory
-      ~unit(); //destructor  so a Unit pointer can resolve properly.
-      unit(const unit& other); //Copy Constructor
-      unit& operator=(const unit& rhs);
+      unit(const char* s);
+      unit(const std::string& str);
 
+      //Temporary function - initializes Unit to Test Parameters
+      void generate_test_unit();
+
+      //Must specify all 3 - Managing own memory
+      //~unit(); //destructor  so a Unit pointer can resolve properly.
+      //unit(const unit& other); //Copy Constructor
+      //unit& operator=(const unit& rhs);
+     
+      // OUTPUT FUNCTION //
+      friend std::ostream& operator<< (std::ostream&, const ClockWorks::game::unit&);
 
       // INITIALIZATION FUNCTION //
       // This function MUST be called before any units are
@@ -86,6 +96,11 @@ namespace ClockWorks {
       static void init(std::size_t gauge, std::size_t stats, 
 		       std::size_t elements, std::size_t elemparams, 
 		       std::size_t status, std::size_t statusparams);
+
+
+
+
+      
 
 
       // GAUGE FUNCTION DESCRIPTION //
@@ -154,6 +169,7 @@ namespace ClockWorks {
       bool remove_status_multiplier(std::size_t status, std::size_t parameter, float value);
 
 
+      std::string str() const;
 
 
     };

@@ -1,12 +1,12 @@
 CC= clang++
-LD = clang++
+LD = g++
 
 INCDIRS=-I./include/
 LIBDIRS=-Linclude/
 BINDIR=bin/
 SRCDIR=src/
 
-CXXFLAGS= -c --std=c++11 -Wall
+CXXFLAGS= -c -g --std=c++11 -Wall
 LDFLAGS=
 SOURCES= $(shell find $(SRCDIR) -name '*.cpp')
 OBJECTS=$(SOURCES:.cpp=.o)

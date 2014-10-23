@@ -4,7 +4,17 @@
 
 int main() {
   ClockWorks::game::unit::init(2,12,8,2,26,2);
-  //  ClockWorks::game::unit bob;
+  
+  ClockWorks::game::unit alice;
+  alice.generate_test_unit();
+
+  ClockWorks::game::unit bob(alice.str());
+
+  std::cout << alice << std::endl << std::endl;
+  std::cout << bob << std::endl << std::endl;
+
+  std::cout << "alice is " << ( (alice.str() == bob.str()) ? "equal (YAY!)" : "NOT EQUAL (Boo!)" )<< " to bob." << std::endl;
+
   return 0;
 }
 

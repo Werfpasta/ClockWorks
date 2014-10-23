@@ -2,11 +2,12 @@
 #include <vector>
 #include <string>
 #include <cstdlib>
-
 #include <stdexcept>
+#include <iostream>
+#include <sstream>
 
-#include "../../../include/clockworks/game/unit.hpp"
-
+#include "clockworks/game/unit.hpp"
+#include "clockworks/util/escape_quotes.hpp"
 
 namespace {
 
@@ -44,14 +45,68 @@ namespace {
   }
 
 
+  template<typename T>
+  T read_buffer(const char* &s) {
+    
+    std::stringstream strm;
+    //strm.reserve(initsize);
+    bool escaped = false;
+
+    for(; escaped || *s != ','; s++) {
+      if(!escaped && *s == '\\') {
+	escaped = true;
+	continue;
+      }
+      strm.put(*s);
+      escaped = false;
+
+    }
+
+    s++;
+ 
+    T returnme;
+    strm >> returnme; //DON'T SKIP WHITESPACE!!!
+    return returnme;
+
+  }
+
+
+  std::string read_buffer(const char* &s) {
+    
+    std::stringstream strm;
+    //strm.reserve(initsize);
+    bool escaped = false;
+
+    for(; escaped || *s != ','; s++) {
+      if(!escaped && *s == '\\') {
+	escaped = true;
+	continue;
+      }
+      strm.put(*s);
+      escaped = false;
+
+    }
+
+    s++;
+
+    return strm.str();
+
+  }
+
+
 }
 
 
 namespace ClockWorks {
   namespace game {
+ 
+    // nonmembers
+    std::ostream& operator<< (std::ostream& strm, const ClockWorks::game::unit& A) {
+      return strm << A.str();
+    }
     
     //protected
-   
+    
     std::size_t unit::_NUM_GAUGES;
     std::size_t unit::_NUM_STATISTICS;
     std::size_t unit::_NUM_ELEMENTS;
@@ -71,9 +126,208 @@ namespace ClockWorks {
       
     }
 
-    
     //public
 
+
+    unit::unit() {
+      if(!_initialized) throw std::exception(); //"PASTA ERROR: Unit Construct Not Yet Initialized!!\n";
+
+      gauges.resize(_NUM_GAUGES);
+      gauge_modifiers.resize(_NUM_GAUGES);
+      gauge_multipliers.resize(_NUM_GAUGES);
+
+      statistics.resize(_NUM_STATISTICS);
+      statistic_modifiers.resize(_NUM_STATISTICS);
+      statistic_multipliers.resize(_NUM_STATISTICS);
+
+      elemental_parameters.resize(_NUM_ELEMENTS);
+      elemental_parameter_modifiers.resize(_NUM_ELEMENTS);
+      elemental_parameter_multipliers.resize(_NUM_ELEMENTS);
+
+
+      for(std::valarray<float>& a: elemental_parameters) {
+	a.resize(_NUM_ELEMENTAL_PARAMETERS);
+      }
+
+      for(std::valarray<float>& a: elemental_parameter_modifiers) {
+	a.resize(_NUM_ELEMENTAL_PARAMETERS);
+      }
+
+      for(std::valarray<std::vector<float> >& a: elemental_parameter_multipliers) {
+	a.resize(_NUM_ELEMENTAL_PARAMETERS);
+      }
+
+      status_parameters.resize(_NUM_STATUSES);
+      status_parameter_modifiers.resize(_NUM_STATUSES);
+      status_parameter_multipliers.resize(_NUM_STATUSES);
+
+      for(std::valarray<float>& a: status_parameters) {
+	a.resize(_NUM_STATUS_PARAMETERS);
+      }
+
+      for(std::valarray<float>& a: status_parameter_modifiers) {
+	a.resize(_NUM_STATUS_PARAMETERS);
+      }
+
+      for(std::valarray<std::vector<float> >& a: status_parameter_multipliers) {
+	a.resize(_NUM_STATUS_PARAMETERS);
+      }
+
+    }
+    
+    
+    unit::unit(const char* s) : unit() {
+      
+      //std::stringstream ss;
+      std::size_t i,I;
+      
+      name = read_buffer(s);
+      I = read_buffer<std::size_t>(s);
+      for(i=0; i<I; i++)
+	description.push_back(read_buffer(s));
+
+      level = read_buffer<int>(s);
+      std::get<0>(xp) = read_buffer<int>(s);
+      std::get<1>(xp) = read_buffer<int>(s);
+
+      for(std::pair<int,int>& g: gauges) {
+	std::get<0>(g) = read_buffer<int>(s);
+	std::get<1>(g) = read_buffer<int>(s);
+      }
+
+      for(int& x : gauge_modifiers)
+	x = read_buffer<int>(s);
+
+      for(std::vector<float>& v: gauge_multipliers) {
+	I = read_buffer<std::size_t>(s);
+	for(i=0; i<I; i++)
+	  v.push_back(read_buffer<float>(s));
+      }
+
+
+      //Statistics
+
+      for(int& x : statistics) 
+	x = read_buffer<int>(s);
+
+      for(int& x : statistic_modifiers)
+	x = read_buffer<int>(s);
+
+      for(std::vector<float>& v: statistic_multipliers) {
+	I = read_buffer<std::size_t>(s);
+	for(i=0; i<I; i++)
+	  v.push_back(read_buffer<float>(s));
+      }
+
+
+      //Elements
+
+      for(std::valarray<float>& a: elemental_parameters)
+	for(float& f : a)
+	  f = read_buffer<float>(s);
+
+      for(std::valarray<float>& a: elemental_parameter_modifiers)
+	for(float& f:a)
+	  f = read_buffer<float>(s);
+
+      for(std::valarray<std::vector<float> >& a : elemental_parameter_multipliers)
+	for(std::vector<float>& v : a) {
+	  I = read_buffer<std::size_t>(s);
+	  for(i=0; i<I; i++)
+	    v.push_back(read_buffer<float>(s));
+	}
+
+
+      //Statuses
+
+      for(std::valarray<float>& a: status_parameters)
+	for(float& f:a)
+	  f = read_buffer<float>(s);
+
+      for(std::valarray<float>& a: status_parameter_modifiers)
+	for(float& f:a)
+	  f = read_buffer<float>(s);
+
+      for(std::valarray<std::vector<float> >& a : status_parameter_multipliers)
+	for(std::vector<float>& v : a) {
+	  I = read_buffer<std::size_t>(s);
+	  for(i=0; i<I; i++)
+	    v.push_back(read_buffer<float>(s));
+	}
+ 
+    }
+
+    unit::unit(const std::string& str) : unit(str.c_str()) {}
+
+
+
+    void unit::generate_test_unit() {
+      name = "Test Unit";
+
+      description.resize(0); //clear vector
+
+      description.push_back("This is a test unit.");
+      description.push_back("If you are seeing this text, it means you have generated a debug unit to test something!");
+      description.push_back("Warning: this unit is not fit for actual combat.");
+
+
+      level = 0;
+      std::get<0>(xp) = 123;
+      std::get<1>(xp) = 321;
+
+
+      //Gauges
+      for(std::pair<int,int>& g: gauges) {
+	std::get<0>(g) = 0; 
+	std::get<1>(g) = 1;
+      }
+
+      for(std::size_t i=0; i<_NUM_GAUGES; i++) {
+	gauge_modifiers[i] = i+1;
+
+	gauge_multipliers[i].clear();
+	for(std::size_t j = 0; j<=i; j++)
+	  gauge_multipliers[i].push_back((i+1.0)*10.0/100.0);
+      }
+
+      //Statistics
+      for(std::size_t i=0; i<_NUM_STATISTICS; i++) {
+	statistics[i] = i+1;
+	statistic_modifiers[i] = i+1;
+
+	statistic_multipliers[i].clear();
+	for(std::size_t j = 0; j<=i; j++)
+	  statistic_multipliers[i].push_back((i+1.0)*10.0/100.0);
+      }
+
+
+      //Elements
+      for(std::size_t i=0; i<_NUM_ELEMENTS; i++)
+	for(std::size_t j=0; j<_NUM_ELEMENTAL_PARAMETERS; j++) {
+	  elemental_parameters[i][j] = (i+1)*1000+j;
+	  elemental_parameter_modifiers[i][j] = (i+1)*100+j;
+
+
+	  elemental_parameter_multipliers[i][j].clear();
+	  for(std::size_t k = 0; k<=j; k++)
+	    elemental_parameter_multipliers[i][j].push_back((k+1.0)*10.0/100.0);
+	
+	}
+
+
+      //Statuses
+      for(std::size_t i=0; i<_NUM_STATUSES; i++) 
+	for(std::size_t j=0; j<_NUM_STATUS_PARAMETERS; j++) {
+	  status_parameters[i][j] = (i+1)*1000+j;
+	  status_parameter_modifiers[i][j] = (i+1)*100+j;
+
+
+	  status_parameter_multipliers[i][j].clear();
+	  for(std::size_t k = 0; k<=j; k++)
+	    status_parameter_multipliers[i][j].push_back((k+1.0)*10.0/100.0);
+	}
+    }               
+    
     
     void unit::init(std::size_t gauge, std::size_t stats, 
 		    std::size_t elements, std::size_t elemparams, 
@@ -139,8 +393,7 @@ namespace ClockWorks {
       return returnme;
     }
     
-    
-    
+        
     int unit::get_statistic(std::size_t statistic, bool modded) const{
       return array_fetch(statistics,statistic,statistic_modifiers[statistic], statistic_multipliers[statistic], modded);
     }
@@ -222,6 +475,79 @@ namespace ClockWorks {
       if(parameter >= status_parameters[status].size()) throw std::out_of_range("Error: Parameter index out of bounds");
       return vector_remove(status_parameter_multipliers[status][parameter], value);
     }    
+
+
+    std::string unit::str() const{
+      
+      std::stringstream strm;
+
+      strm << Util::escape_quotes(name) << ',';
+      strm << description.size() << ',';
+      for(const std::string& s: description)
+	strm << Util::escape_quotes(s) << ',';
+      //strm << '\"' << s << "\",";
+      strm << level << ',' << std::get<0>(xp) << ',' << std::get<1>(xp) << ',';
+      
+      //Gauges
+      for(const std::pair<int,int>& g: gauges)
+	strm << std::get<0>(g) << ',' << std::get<1>(g) << ',';
+      for(const int& i: gauge_modifiers)
+	strm << i << ',';
+      for(const std::vector<float>& v: gauge_multipliers) {
+	strm << v.size() << ',';
+	for(const float& f: v)
+	  strm << f << ',';
+      }
+      
+      //Statistics
+      for(const int& i: statistics)
+	strm << i << ',';
+      for(const int& i: statistic_modifiers)
+	strm << i << ',';
+      for(const std::vector<float>& v: statistic_multipliers) {
+	strm << v.size() << ',';
+	for(const float& f: v)
+	  strm << f << ',';
+      }
+
+     
+ 
+      //Elements
+      for(const std::valarray<float>& a: elemental_parameters)
+	for(const float& f: a)
+	  strm << f << ',';
+      
+      for(const std::valarray<float>& a: elemental_parameter_modifiers)
+	for(const float& f: a)
+	  strm << f << ',';
+      
+      for(const std::valarray<std::vector<float> >& a : elemental_parameter_multipliers)
+	for(const std::vector<float>& v : a) {
+	  strm << v.size() << ',';
+	  for(const float& f: v)
+	    strm << f << ',';
+	}
+      
+      //Statuses
+      for(const std::valarray<float>& a: status_parameters)
+	for(const float& f: a)
+	  strm << f << ',';
+      
+      for(const std::valarray<float>& a: status_parameter_modifiers)
+	for(const float& f: a)
+	  strm << f << ',';
+      
+      for(const std::valarray<std::vector<float> >& a : status_parameter_multipliers)
+	for(const std::vector<float>& v : a) {
+	  strm << v.size() << ',';
+	  for(const float& f: v)
+	    strm << f << ',';
+	}
+      
+      return strm.str();
+
+
+    }
     
   };
 
