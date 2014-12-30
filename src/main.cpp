@@ -1,26 +1,32 @@
-#pragma warning(disable : 4426) //'constexpr' was ignored (class literal types are not yet supported)
+#define CW_CPP_STRING_(x) #x
+#define CW_CPP_STRING(x) CW_CPP_STRING_(x)
+#define CW_CPP_JOIN_(x,y) x##y
+#define CW_CPP_JOIN(x,y) CW_CPP_JOIN_(x,y)
+#define CW_DEBUG_LINE_INFO(x) ClockWorks::IO::Print(CW_CPP_STRING(__FILE__) ":" CW_CPP_STRING(__LINE__) ": ");\
+								ClockWorks::IO::Print(x);\
+								ClockWorks::IO::Print("\n")
+#define CW_DEBUG_LINE ClockWorks::IO::Print(CW_CPP_STRING(__FILE__) ":" CW_CPP_STRING(__LINE__) ": Reached.\n");
+#define CW_DEBUG_CALL(x) CW_DEBUG_LINE; void* ret = x; CW_DEBUG_LINE_INFO("Sucess"); return ret;
+#define CW_DEBUG_CALL_VOID(x) CW_DEBUG_LINE; x; CW_DEBUG_LINE_INFO("Success");
+#define CW_DEBUG
 
-#include "clockworks\tinycpp.hpp"
-#include "clockworks\util\delegate.hpp"
-#include "clockworks\util\dispatcher.hpp"
-#include "clockworks\display\window.hpp"
-#include "clockworks\std\printf.hpp"
-#include "clockworks\std\pair.hpp"
-
-bool MainLoop = true;
-bool OnClose() {
-	MainLoop = false;
-	return false;
+namespace ClockWorks {
+	namespace IO {
+		unsigned long Print(const char*);
+	}
 }
 
-int main(int argc, char **argv) {
-	(void)argc, argv;
-	ClockWorks::std::printf("Welcome to ClockWorks, a (one day) cross-platform, forward-compatable,\n\tOpenGL 2.1 3D game libray.\n\n"
-							"Sorry there isn't much to see!\n");
-	ClockWorks::Display::Window win;
-	win.OnClose.push_back(ClockWorks::Util::Delegate<bool()>::FromFunction<&OnClose>());
-	win.Show();
-	do { win.PumpOSQueue(); }
-	while(MainLoop)  ;
-	return 0;
+#include "clockworks/tinycpp.hpp"
+
+#include "clockworks/io/console.hpp"
+#include "clockworks/c_string/itoa.hpp"
+
+int main(int argc, char** argv){
+	char str[34] = {0};
+	for(int i = 0; i <= 0xFFFFFF; i++){
+		ClockWorks::CString::itoa(i,str, 0x10);
+		ClockWorks::IO::Print(str);
+		ClockWorks::IO::Print(" ");
+	}
+	return 1;
 }
