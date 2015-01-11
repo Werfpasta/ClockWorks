@@ -1,5 +1,5 @@
-#if !defined(CW_INCL_ITERATOR)
-#	define CW_INCL_ITERATOR
+#if !defined(CW_INCL_STD_ITERATOR)
+#	define CW_INCL_STD_ITERATOR
 
 namespace std
 {

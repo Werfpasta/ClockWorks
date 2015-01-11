@@ -1,5 +1,5 @@
-#if !defined(CW_INCL_STDINT)
-#	define CW_INCL_STDINT
+#if !defined(CW_INCL_STD_STDINT)
+#	define CW_INCL_STD_STDINT
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wlanguage-extension-token"

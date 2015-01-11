@@ -1,5 +1,5 @@
-#if !defined(CW_INCL_OS_WIN32_TYPES)
-#define CW_INCL_OS_WIN32_TYPES
+#if !defined(CW_INCL_PLATFORM_NT_TYPES)
+#define CW_INCL_PLATFORM_NT_TYPES
 namespace ClockWorks {
 	namespace OS {
 		namespace Win32 {
@@ -22,6 +22,9 @@ namespace ClockWorks {
 				typedef WCHAR *PWCHAR,*LPWCH,*PWCH,*NWPSTR,*LPWSTR,*PWSTR;
 				typedef CW_WIN32_CONST WCHAR *LPCWCH,*PCWCH,*LPCWSTR,*PCWSTR;
 				typedef CHAR *PCHAR,*LPCH,*PCH,*NPSTR,*LPSTR,*PSTR;
+				typedef CW_WIN32_CONST CHAR *LPCSTR;
+				typedef LPSTR LPTSTR;
+				typedef LPCSTR LPCTSTR;
 				typedef CW_WIN32_CONST CHAR *LPCCH,*PCSTR,*LPCSTR;
 				typedef unsigned char BYTE;
 				typedef unsigned long DWORD;
