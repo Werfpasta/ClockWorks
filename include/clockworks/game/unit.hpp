@@ -146,13 +146,25 @@ namespace ClockWorks {
       bool remove_gauge_multiplier(std::size_t gauge, float value, bool respect = true);
       
 
-      // TODO: Document the rest of this.
+      // STATISTIC FUNCTION CALLS //
+
+      // As Gauge function calls, but with statistic in place of 
+      // gauge, and no respect argument, as it no longer makes sense.
 
       int get_statistic(std::size_t statistic, bool modded = true) const;
       void set_statistic(std::size_t statistic, int value);
       void modify_statistic(std::size_t statistic, int value);
       void add_statistic_multiplier(std::size_t statistic, float value);
       bool remove_statistic_multiplier(std::size_t statistic, float value);
+
+
+
+      // ELEMENTAL AND STATUS FUNCTION CALLS //
+
+      // As Statistic function calls, except with element and
+      // parameter replacing statistic (Each elemental parameter
+      // is uniquely identified by an element number and a 
+      // parameter number).
 
 
       int get_elemental_parameter(std::size_t element, std::size_t parameter, bool modded = true) const;
@@ -169,6 +181,8 @@ namespace ClockWorks {
       bool remove_status_multiplier(std::size_t status, std::size_t parameter, float value);
 
 
+
+      // This method returns a string representation of the unit.
       std::string str() const;
 
 
